@@ -1,0 +1,500 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance System</title>
+  <style>
+    /* ========== GLOBAL STYLES ========== */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f7f9fc;
+    }
+
+    header {
+      background-color: #0096c7; /* turquoise foncé */
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+    }
+
+    /* ========== NAVBAR (TURQUOISE) ========== */
+    nav {
+      display: flex;
+      justify-content: center;
+      background-color: #00b4d8; /* turquoise principal */
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 12px 20px;
+      display: block;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    nav a:hover {
+      background-color: #0077b6; /* bleu plus foncé au survol */
+    }
+
+    /* ========== SECTIONS ========== */
+    section {
+      padding: 20px;
+    }
+
+    h2 {
+      color: #0077b6;
+    }
+
+    /* ========== TABLE ========== */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #90e0ef;
+    }
+
+    /* ========== FORM ========== */
+    form {
+      background-color: white;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: #00b4d8;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0077b6;
+    }
+
+    @media (min-width: 600px) {
+      form {
+        width: 60%;
+        margin: 20px auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+ 
+  <header>
+    <h1>Student Attendance System</h1>
+  </header>
+
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Attendance List</a>
+    <a href="#">Add Student</a>
+    <a href="#">Reports</a>
+    <a href="#">Logout</a>
+  </nav>
+  <section>
+    <h2>Attendance List</h2>
+    <table>
+      <thead>
+        <tr>
+          <th rowspan="2">Last Name</th>
+          <th rowspan="2">First Name</th>
+          <th clospan="2">S1</th>
+          <th colspan="2">S2</th>
+          <th colspan="2">S3</th>
+          <th colspan="2">S4</th>
+          <th colspan="2">S5</th>
+          <th colspan="2">S6</th>
+          <th rowspan="2">absence</th>
+          <th rowspan="2">participation</th>
+        </tr>
+        <tr>
+            <th> p </th>
+            <th> pa </th>
+            <th> p </th>
+            <th> pa </th>
+            <th> p </th>
+            <th> pa </th>
+            <th> p </th>
+            <th> pa </th>
+            <th> p </th>
+            <th> pa </th>
+            <th> p </th>
+            <th> pa </th>            
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Ahmed</td>
+          <td>sarah</td> 
+          <td></td> 
+          <td></td>
+          <td>✓</td>
+          <td>✓</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td> </td>
+          <td>5 Abs</td>
+          <td>1 par</td>
+        </tr>
+        <tr>
+          <td>Yacine</td>
+          <td>Ali</td> 
+          <td>✓ </td> 
+          <td></td>
+          <td></td>
+          <td></td>
+          <td>✓ </td>
+          <td>✓ </td>
+          <td>✓ </td>
+          <td>✓ </td>
+          <td>✓ </td>
+          <td>✓ </td>
+          <td></td>
+          <td></td>
+          <td>1 Abs</td>
+          <td>4 par</td>
+        </tr>
+        <tr>
+          <td>Yacine</td>
+          <td>Ali</td> 
+          <td>✓ </td> 
+          <td>✓ </td>
+          <td></td>
+          <td></td>
+          <td>✓ </td>
+          <td>✓ </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+          <td></td>
+          <td></td>
+          <td>4 Abs</td>
+          <td>2 par</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+    <section>
+    <h2>Add New Student</h2>
+    <form>
+      <label for="studentId">Student ID</label>
+      <input type="text" id="studentId" name="studentId" placeholder="Enter Student ID" required>
+
+      <label for="lastName">Last Name</label>
+      <input type="text" id="lastName" name="lastName" placeholder="Enter Last Name" required>
+
+      <label for="firstName">First Name</label>
+      <input type="text" id="firstName" name="firstName" placeholder="Enter First Name" required>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="Enter Email" required>
+
+      <button type="submit">Submit</button>
+    </form>
+  </section> 
+    <script>
+    const table = document.getElementById("attendanceTable");
+    const rows = table.querySelectorAll("tbody tr");
+
+    rows.forEach(row => {
+      const cells = row.querySelectorAll("td");
+      
+      // Sessions = colonnes 2 à 7 (index 2–7)
+      const sessions = Array.from(cells).slice(2, 8);
+      // Participation = colonnes 8 à 13 (index 8–13)
+      const participation = Array.from(cells).slice(8, 14);
+      // Colonne message = dernière
+      const messageCell = cells[cells.length - 1];
+
+      let absences = 0;
+      let participations = 0;
+
+      // Compter absences (cases vides)
+      sessions.forEach(cell => {
+        if (cell.textContent.trim() !== "✓") absences++;
+      });
+
+      // Compter participations (✓ = présent)
+      participation.forEach(cell => {
+        if (cell.textContent.trim() === "✓") participations++;
+      });
+
+      // Coloration selon absences
+      if (absences < 3) {
+        row.classList.add("green");
+        messageCell.textContent = "Good attendance – Excellent participation";
+      } else if (absences >= 3 && absences <= 4) {
+        row.classList.add("yellow");
+        messageCell.textContent = "Warning – attendance low – You need to participate more";
+      } else {
+        row.classList.add("red");
+        messageCell.textContent = "Excluded – too many absences – You need to participate more";
+      }
+
+      // Optionnel : afficher stats
+      messageCell.textContent += ` (${absences} absences, ${participations} participations)`;
+    });
+  </script>
+
+</body>
+</html>   -->
+.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Attendance System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f7f9fc;
+    }
+
+    header {
+      background-color: #0096c7;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      background-color: #00b4d8;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 12px 20px;
+      display: block;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    nav a:hover {
+      background-color: #0077b6;
+    }
+
+    section {
+      padding: 20px;
+    }
+
+    h2 {
+      color: #0077b6;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 6px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #90e0ef;
+    }
+
+    /* Couleurs selon le nombre d'absences */
+    .good {
+      background-color: #d4edda; /* vert clair */
+    }
+    .warning {
+      background-color: #fff3cd; /* jaune clair */
+    }
+    .bad {
+      background-color: #f8d7da; /* rouge clair */
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Student Attendance System</h1>
+  </header>
+
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Attendance List</a>
+    <a href="#">Add Student</a>
+    <a href="#">Reports</a>
+    <a href="#">Logout</a>
+  </nav>
+
+  <section>
+    <h2>Attendance List</h2>
+
+    <table id="attendanceTable">
+      <thead>
+        <tr>
+          <th rowspan="2">Last Name</th>
+          <th rowspan="2">First Name</th>
+          <th colspan="2">S1</th>
+          <th colspan="2">S2</th>
+          <th colspan="2">S3</th>
+          <th colspan="2">S4</th>
+          <th colspan="2">S5</th>
+          <th colspan="2">S6</th>
+          <th rowspan="2">Message</th>
+        </tr>
+        <tr>
+          <th>P</th><th>Pa</th>
+          <th>P</th><th>Pa</th>
+          <th>P</th><th>Pa</th>
+          <th>P</th><th>Pa</th>
+          <th>P</th><th>Pa</th>
+          <th>P</th><th>Pa</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td>Ahmed</td>
+          <td>Sara</td>
+          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A"></td>
+          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A"></td>
+          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A"></td>
+          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A"></td>
+          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A"></td>
+          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A"></td>
+          <td class="message"></td>
+        </tr>
+
+        <tr>
+          <td>Yacine</td>
+          <td>Ali</td>
+          <td><input type="checkbox" class="P" checked></td><td><input type="checkbox" class="A"></td>
+          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A"></td>
+          <td><input type="checkbox" class="P" checked></td><td><input type="checkbox" class="A"></td>
+          <td><input type="checkbox" class="P" checked></td><td><input type="checkbox" class="A"></td>
+          <td><input type="checkbox" class="P" checked></td><td><input type="checkbox" class="A"></td>
+          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A"></td>
+          <td class="message"></td>
+        </tr>
+
+        <tr>
+          <td>Rania</td>
+          <td>Houcine</td>
+          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A" checked></td>
+          <td><input type="checkbox" class="P" checked></td><td><input type="checkbox" class="A"></td>
+          <td><input type="checkbox" class="P" checked></td><td><input type="checkbox" class="A"></td>
+          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A" checked></td>
+          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A" checked></td>
+          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A"></td>
+          <td class="message"></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <script>
+    function updateTable() {
+      const rows = document.querySelectorAll("#attendanceTable tbody tr");
+
+      rows.forEach(row => {
+        const presentChecks = row.querySelectorAll('input.P');
+        const absentChecks = row.querySelectorAll('input.A');
+        const messageCell = row.querySelector('.message');
+
+        let participations = 0;
+        let absences = 0;
+
+        for (let i = 0; i < presentChecks.length; i++) {
+          if (presentChecks[i].checked) participations++;
+          if (absentChecks[i].checked) absences++;
+        }
+
+        // Définir couleur et message selon absences
+        row.classList.remove('good', 'warning', 'bad');
+        if (absences < 3) {
+          row.classList.add('good');
+          messageCell.textContent = `Good attendance – Excellent participation (${absences} abs, ${participations} par)`;
+        } else if (absences >= 3 && absences <= 4) {
+          row.classList.add('warning');
+          messageCell.textContent = `Warning – attendance low – You need to participate more (${absences} abs, ${participations} par)`;
+        } else {
+          row.classList.add('bad');
+          messageCell.textContent = `Excluded – too many absences – You need to participate more (${absences} abs, ${participations} par)`;
+        }
+      });
+    }
+
+    // Assure qu'on ne coche jamais P et A en même temps
+    document.querySelectorAll("#attendanceTable input").forEach(chk => {
+      chk.addEventListener("change", e => {
+        const cell = e.target.closest("td");
+        const row = e.target.closest("tr");
+        const inputsInSameSession = cell.parentNode.querySelectorAll("input");
+
+        // Décoche l'autre case du même couple (P/Pa)
+        if (e.target.classList.contains("P")) {
+          const correspondingA = e.target.parentElement.nextElementSibling.querySelector(".A");
+          if (correspondingA) correspondingA.checked = false;
+        } else if (e.target.classList.contains("A")) {
+          const correspondingP = e.target.parentElement.previousElementSibling.querySelector(".P");
+          if (correspondingP) correspondingP.checked = false;
+        }
+
+        updateTable();
+      });
+    });
+
+    // Mise à jour initiale
+    updateTable();
+  </script>
+</body>
+</html>
+
+
+
+
+
+
