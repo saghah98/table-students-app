@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Student Attendance System</title>
   <style>
+    /* ========== GLOBAL STYLES ========== */
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -46,6 +47,8 @@
     h2 {
       color: #0077b6;
     }
+
+    /* ========== TABLE ========== */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -62,15 +65,18 @@
       background-color: #90e0ef;
     }
 
+    /* Couleurs selon le nombre d'absences */
     .good {
-      background-color: #d4edda; 
+      background-color: #d4edda;
     }
     .warning {
-      background-color: #fff3cd; 
+      background-color: #fff3cd;
     }
     .bad {
-      background-color: #f8d7da; 
+      background-color: #f8d7da;
     }
+
+    /* ========== FORM ========== */
     form {
       background-color: white;
       padding: 20px;
@@ -117,13 +123,6 @@
         margin: 20px auto;
       }
     }
-
-    .success {
-      color: green;
-      font-weight: bold;
-      text-align: center;
-      margin-top: 10px;
-    }
   </style>
 </head>
 
@@ -140,6 +139,7 @@
     <a href="#">Logout</a>
   </nav>
 
+  <!-- ========== ATTENDANCE TABLE SECTION ========== -->
   <section>
     <h2>Attendance List</h2>
 
@@ -190,10 +190,23 @@
           <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A"></td>
           <td class="message"></td>
         </tr>
+
+        <tr>
+          <td>Rania</td>
+          <td>Houcine</td>
+          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A" checked></td>
+          <td><input type="checkbox" class="P" checked></td><td><input type="checkbox" class="A"></td>
+          <td><input type="checkbox" class="P" checked></td><td><input type="checkbox" class="A"></td>
+          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A" checked></td>
+          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A" checked></td>
+          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A"></td>
+          <td class="message"></td>
+        </tr>
       </tbody>
     </table>
   </section>
 
+  <!-- ========== ADD STUDENT FORM ========== -->
   <section>
     <h2>Add New Student</h2>
     <form id="studentForm" novalidate>
@@ -214,12 +227,28 @@
       <div class="error" id="emailError"></div>
 
       <button type="submit">Submit</button>
-      <div class="success" id="successMsg"></div>
     </form>
   </section>
 
+  <!-- ========== REPORT SECTION ========== -->
+  <section>
+    <h2>Attendance Report</h2>
+    <button id="showReportBtn">Show Report</button>
+    
+    <div id="reportSection" style="display:none; margin-top:20px;">
+      <h3>Statistics</h3>
+      <p><strong>Total Students:</strong> <span id="totalStudents">0</span></p>
+      <p><strong>Students Present:</strong> <span id="studentsPresent">0</span></p>
+      <p><strong>Students Participated:</strong> <span id="studentsParticipated">0</span></p>
+
+      <canvas id="attendanceChart" width="400" height="200"></canvas>
+    </div>
+  </section>
+
+  <!-- ========== JAVASCRIPT ========== -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-  
+    // --- TABLE UPDATE LOGIC ---
     function updateTable() {
       const rows = document.querySelectorAll("#attendanceTable tbody tr");
 
@@ -250,24 +279,23 @@
       });
     }
 
-    function attachCheckboxListeners(row) {
-      row.querySelectorAll("input").forEach(chk => {
-        chk.addEventListener("change", e => {
-          if (e.target.classList.contains("P")) {
-            const correspondingA = e.target.parentElement.nextElementSibling?.querySelector(".A");
-            if (correspondingA) correspondingA.checked = false;
-          } else if (e.target.classList.contains("A")) {
-            const correspondingP = e.target.parentElement.previousElementSibling?.querySelector(".P");
-            if (correspondingP) correspondingP.checked = false;
-          }
-          updateTable();
-        });
+    document.querySelectorAll("#attendanceTable input").forEach(chk => {
+      chk.addEventListener("change", e => {
+        const cell = e.target.closest("td");
+        if (e.target.classList.contains("P")) {
+          const correspondingA = e.target.parentElement.nextElementSibling?.querySelector(".A");
+          if (correspondingA) correspondingA.checked = false;
+        } else if (e.target.classList.contains("A")) {
+          const correspondingP = e.target.parentElement.previousElementSibling?.querySelector(".P");
+          if (correspondingP) correspondingP.checked = false;
+        }
+        updateTable();
       });
-    }
+    });
 
-    document.querySelectorAll("#attendanceTable tbody tr").forEach(attachCheckboxListeners);
     updateTable();
 
+    // --- FORM VALIDATION + ADD NEW ROW ---
     document.getElementById("studentForm").addEventListener("submit", function(event) {
       event.preventDefault();
 
@@ -280,13 +308,11 @@
       const lastNameError = document.getElementById("lastNameError");
       const firstNameError = document.getElementById("firstNameError");
       const emailError = document.getElementById("emailError");
-      const successMsg = document.getElementById("successMsg");
 
       idError.textContent = "";
       lastNameError.textContent = "";
       firstNameError.textContent = "";
       emailError.textContent = "";
-      successMsg.textContent = "";
 
       let isValid = true;
 
@@ -324,29 +350,82 @@
       }
 
       if (isValid) {
-        const tbody = document.querySelector("#attendanceTable tbody");
+        const tableBody = document.querySelector("#attendanceTable tbody");
         const newRow = document.createElement("tr");
 
-        newRow.innerHTML = `
+        let cells = `
           <td>${lastName}</td>
           <td>${firstName}</td>
-          ${Array(6).fill('<td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A"></td>').join("")}
-          <td class="message"></td>
         `;
+        for (let i = 0; i < 6; i++) {
+          cells += `
+            <td><input type="checkbox" class="P"></td>
+            <td><input type="checkbox" class="A"></td>
+          `;
+        }
+        cells += `<td class="message"></td>`;
+        newRow.innerHTML = cells;
+        tableBody.appendChild(newRow);
 
-        tbody.appendChild(newRow);
-        attachCheckboxListeners(newRow);
         updateTable();
-
-        successMsg.textContent = "✅ Student successfully added!";
+        alert("✅ Student successfully added!");
         this.reset();
-
-        setTimeout(() => (successMsg.textContent = ""), 3000);
       }
+    });
+
+    // --- REPORT GENERATION ---
+    document.getElementById("showReportBtn").addEventListener("click", function() {
+      const rows = document.querySelectorAll("#attendanceTable tbody tr");
+      const totalStudents = rows.length;
+      let studentsPresent = 0;
+      let studentsParticipated = 0;
+
+      rows.forEach(row => {
+        const presentChecks = row.querySelectorAll('input.P');
+        const anyPresent = Array.from(presentChecks).some(chk => chk.checked);
+        const participationCount = Array.from(presentChecks).filter(chk => chk.checked).length;
+
+        if (anyPresent) studentsPresent++;
+        if (participationCount > 0) studentsParticipated++;
+      });
+
+      document.getElementById("totalStudents").textContent = totalStudents;
+      document.getElementById("studentsPresent").textContent = studentsPresent;
+      document.getElementById("studentsParticipated").textContent = studentsParticipated;
+
+      document.getElementById("reportSection").style.display = "block";
+
+      const ctx = document.getElementById('attendanceChart').getContext('2d');
+      if (window.attendanceChart) window.attendanceChart.destroy();
+
+      window.attendanceChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Total Students', 'Present', 'Participated'],
+          datasets: [{
+            label: 'Attendance Overview',
+            data: [totalStudents, studentsPresent, studentsParticipated],
+            backgroundColor: ['#0077b6', '#00b4d8', '#90e0ef']
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: { beginAtZero: true, ticks: { stepSize: 1 } }
+          }
+        }
+      });
     });
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
 
 
 
