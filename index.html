@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Student Attendance System</title>
   <style>
-    /* ========== GLOBAL STYLES ========== */
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -48,7 +47,7 @@
       color: #0077b6;
     }
 
-    /* ========== TABLE ========== */
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -76,7 +75,7 @@
       background-color: #f8d7da;
     }
 
-    /* ========== FORM ========== */
+
     form {
       background-color: white;
       padding: 20px;
@@ -139,7 +138,7 @@
     <a href="#">Logout</a>
   </nav>
 
-  <!-- ========== ATTENDANCE TABLE SECTION ========== -->
+
   <section>
     <h2>Attendance List</h2>
 
@@ -206,7 +205,7 @@
     </table>
   </section>
 
-  <!-- ========== ADD STUDENT FORM ========== -->
+
   <section>
     <h2>Add New Student</h2>
     <form id="studentForm" novalidate>
@@ -230,7 +229,7 @@
     </form>
   </section>
 
-  <!-- ========== REPORT SECTION ========== -->
+ 
   <section>
     <h2>Attendance Report</h2>
     <button id="showReportBtn">Show Report</button>
@@ -245,10 +244,10 @@
     </div>
   </section>
 
-  <!-- ========== JAVASCRIPT ========== -->
+  
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    // --- TABLE UPDATE LOGIC ---
+    
     function updateTable() {
       const rows = document.querySelectorAll("#attendanceTable tbody tr");
 
@@ -373,7 +372,7 @@
       }
     });
 
-    // --- REPORT GENERATION ---
+  
     document.getElementById("showReportBtn").addEventListener("click", function() {
       const rows = document.querySelectorAll("#attendanceTable tbody tr");
       const totalStudents = rows.length;
