@@ -63,8 +63,7 @@
     th {
       background-color: #90e0ef;
     }
-
-    /* Couleurs selon le nombre d'absences */
+ 
     .good {
       background-color: #d4edda;
     }
@@ -103,7 +102,7 @@
       border: none;
       padding: 10px 20px;
       border-radius: 5px;
-      cursor: pointer;
+      cursor: pointer; 
     }
 
     button:hover {
@@ -203,6 +202,9 @@
         </tr>
       </tbody>
     </table>
+    <button id="highlightBtn" style="margin-top:15px;">Highlight Excellent Students</button>
+    <button id="resetBtn" style="margin-top:15px; margin-left:10px;">Reset Colors</button>
+
   </section>
 
 
@@ -294,7 +296,7 @@
 
     updateTable();
 
-    // --- FORM VALIDATION + ADD NEW ROW ---
+  
     document.getElementById("studentForm").addEventListener("submit", function(event) {
       event.preventDefault();
 
@@ -348,28 +350,60 @@
         isValid = false;
       }
 
-      if (isValid) {
-        const tableBody = document.querySelector("#attendanceTable tbody");
-        const newRow = document.createElement("tr");
+    if (isValid) {
+        const studentData = {
+          studentId: id,
+          lastName: lastName,
+          firstName: firstName,
+          email: email
+           };
 
-        let cells = `
-          <td>${lastName}</td>
-          <td>${firstName}</td>
+ 
+  fetch("add_student.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(studentData)
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.status === "success") {
+      
+      
+      const tableBody = document.querySelector("#attendanceTable tbody");
+      const newRow = document.createElement("tr");
+
+      let cells = `
+        <td>${lastName}</td>
+        <td>${firstName}</td>
+      `;
+      for (let i = 0; i < 6; i++) {
+        cells += `
+          <td><input type="checkbox" class="P"></td>
+          <td><input type="checkbox" class="A"></td>
         `;
-        for (let i = 0; i < 6; i++) {
-          cells += `
-            <td><input type="checkbox" class="P"></td>
-            <td><input type="checkbox" class="A"></td>
-          `;
-        }
-        cells += `<td class="message"></td>`;
-        newRow.innerHTML = cells;
-        tableBody.appendChild(newRow);
-
-        updateTable();
-        alert("✅ Student successfully added!");
-        this.reset();
       }
+      cells += `<td class="message"></td>`;
+
+      newRow.innerHTML = cells;
+      tableBody.appendChild(newRow);
+     
+       setTimeout(() => {
+       newRow.classList.add('show'); 
+       }, 10);
+
+
+      updateTable();
+      alert("✅ Student successfully added and saved in database!");
+      document.getElementById("studentForm").reset();
+    } 
+    else {
+      alert("❌ Error: " + data.message);
+    }
+  });
+}
+
     });
 
   
@@ -395,7 +429,7 @@
       document.getElementById("reportSection").style.display = "block";
 
       const ctx = document.getElementById('attendanceChart').getContext('2d');
-      if (window.attendanceChart) window.attendanceChart.destroy();
+       //if (window.attendanceChart) window.attendanceChart.destroy();
 
       window.attendanceChart = new Chart(ctx, {
         type: 'bar',
@@ -416,20 +450,70 @@
       });
     });
   </script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function () {
+
+    
+    $("#attendanceTable tbody").on("mouseenter", "tr", function () {
+        $(this).css("background-color", "#e3f2fd");
+    });
+
+   
+    $("#attendanceTable tbody").on("mouseleave", "tr", function () {
+        $(this).css("background-color", "");
+    });
+   
+    $("#attendanceTable tbody").on("click", "tr", function () {
+        const lastName = $(this).find("td:nth-child(1)").text();
+        const firstName = $(this).find("td:nth-child(2)").text();
+
+        let absences = 0;
+        $(this).find("input.A:checked").each(function () {
+            absences++;
+        });
+
+        alert(
+            "👤 Student: " + firstName + " " + lastName +
+            "\n❌ Absences: " + absences
+        );
+    });
+});
+</script>
+<script>
+$(document).ready(function () {
+
+
+    $("#highlightBtn").on("click", function () {
+
+        $("#attendanceTable tbody tr").each(function () {
+
+            let absences = $(this).find("input.A:checked").length;
+
+            if (absences < 3) {
+                // Animation (fade + color change)
+                $(this)
+                    .animate({opacity: 0.3}, 300)
+                    .animate({opacity: 1}, 300)
+                    .css("background-color", "#b2ffb2"); // vert clair
+            }
+        });
+
+    });
+
+  
+    $("#resetBtn").on("click", function () {
+
+        $("#attendanceTable tbody tr").each(function () {
+            $(this).css("background-color", ""); // reset
+        });
+
+    });
+
+});
+</script>
+
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
