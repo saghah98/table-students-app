@@ -206,31 +206,17 @@
     <button id="resetBtn" style="margin-top:15px; margin-left:10px;">Reset Colors</button>
 
   </section>
-
-
   <section>
-    <h2>Add New Student</h2>
-    <form id="studentForm" novalidate>
-      <label for="studentId">Student ID</label>
-      <input type="text" id="studentId" name="studentId" placeholder="Enter Student ID">
-      <div class="error" id="idError"></div>
+  <h2>Add New Student</h2>
 
-      <label for="lastName">Last Name</label>
-      <input type="text" id="lastName" name="lastName" placeholder="Enter Last Name">
-      <div class="error" id="lastNameError"></div>
+<form action="add_student.php" method="POST" novalidate>
+  <input type="text" name="student_id" placeholder="Student ID">
+  <input type="text" name="name" placeholder="Name">
+  <input type="text" name="group" placeholder="Group">
+  <button type="submit">Submit</button>
+</form>
 
-      <label for="firstName">First Name</label>
-      <input type="text" id="firstName" name="firstName" placeholder="Enter First Name">
-      <div class="error" id="firstNameError"></div>
-
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" placeholder="Enter Email">
-      <div class="error" id="emailError"></div>
-
-      <button type="submit">Submit</button>
-    </form>
-  </section>
-
+</section>
  
   <section>
     <h2>Attendance Report</h2>
@@ -247,7 +233,7 @@
   </section>
 
   
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
   <script>
     
     function updateTable() {
@@ -297,8 +283,8 @@
     updateTable();
 
   
-    document.getElementById("studentForm").addEventListener("submit", function(event) {
-      event.preventDefault();
+     document.getElementById("studentForm").addEventListener("submit", function(event) {
+      // event.preventDefault();
 
       const id = document.getElementById("studentId").value.trim();
       const lastName = document.getElementById("lastName").value.trim();
@@ -404,7 +390,7 @@
   });
 }
 
-    });
+    }); 
 
   
     document.getElementById("showReportBtn").addEventListener("click", function() {
@@ -449,7 +435,7 @@
         }
       });
     });
-  </script>
+  </script> 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
