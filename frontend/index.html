@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -18,7 +18,7 @@
   </nav>
 
   <main>
-    <!-- LOGIN -->
+  
     <section id="loginSection" class="panel">
       <h2>Admin Login</h2>
       <form id="loginForm">
@@ -29,7 +29,7 @@
       <div id="loginMsg"></div>
     </section>
 
-    <!-- ATTENDANCE -->
+   
     <section id="attendanceSection" class="panel" style="display:none;">
       <h2>Attendance List</h2>
 
@@ -50,7 +50,7 @@
           </tr>
         </thead>
         <tbody>
-          <!-- generated rows -->
+         
         </tbody>
       </table>
 
@@ -60,10 +60,10 @@
       </div>
     </section>
 
-    <!-- ADD -->
+  
     <section id="addSection" class="panel" style="display:none;">
       <h2>Add New Student</h2>
-      <form id="studentForm">
+      <form id="studentForm" method="POST" action="http://localhost/tableStudent/backend/add_student.php">
         <input type="text" name="fullname" placeholder="Full Name (Last First)" required>
         <input type="text" name="matricule" placeholder="Matricule" required>
         <input type="text" name="group_id" placeholder="Group" required>
@@ -78,7 +78,7 @@
       </table>
     </section>
 
-    <!-- REPORT -->
+  
     <section id="reportSection" class="panel" style="display:none;">
       <h2>Attendance Report</h2>
       <button id="showReportBtn">Show Report</button>
@@ -97,5 +97,6 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="script.js"></script>
 </body>
-</html>
+</html> 
+
 

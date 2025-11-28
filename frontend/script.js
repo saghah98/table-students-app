@@ -264,8 +264,4 @@ $(function(){
     });
   });
 
-  // initial load when user logs in
-  // (if you want auto-login in dev, uncomment:)
-  // setLoggedIn(true); loadStudents(); loadAttendance();
-
 });

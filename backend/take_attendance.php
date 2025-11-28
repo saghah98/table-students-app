@@ -1,61 +1,19 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-$studentsFile = 'students.json';
-if (!file_exists($studentsFile)) {
-    die("❌ students.json not found!");
-}
-
-$students = json_decode(file_get_contents($studentsFile), true);
-if (!$students) $students = [];
-
-$date = date('Y-m-d');
-$attendanceFile = "attendance_$date.json";
+require 'db_connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (file_exists($attendanceFile)) {
-        echo "Attendance for today has already been taken.";
-        exit;
+    $attendance = $_POST['attendance']; // tableau ['student_id'=>status]
+    $session_date = date('Y-m-d');
+
+    foreach ($attendance as $student_id => $status) {
+        $stmt = $conn->prepare("INSERT INTO attendance (student_id, session, present, absent) VALUES (?, ?, ?, ?)");
+        $present = $status === 'present' ? 1 : 0;
+        $absent = $status === 'absent' ? 1 : 0;
+        $stmt->execute([$student_id, 'S1', $present, $absent]); // S1 peut être dynamique
     }
 
-    $attendance = [];
-    foreach ($students as $s) {
-        $id = $s['student_id'];
-        $status = isset($_POST["status_$id"]) && $_POST["status_$id"] === 'present' ? 'present' : 'absent';
-        $attendance[] = ['student_id'=>$id, 'status'=>$status];
-    }
-
-    file_put_contents($attendanceFile, json_encode($attendance, JSON_PRETTY_PRINT));
-    echo "✅ Attendance saved for $date!";
-    exit;
+    echo json_encode(['status'=>'success','message'=>'Attendance saved.']);
 }
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-<title>Take Attendance</title>
-</head>
-<body>
-<h2>Take Attendance for <?php echo $date; ?></h2>
-<form method="POST">
-<table border="1">
-<tr><th>ID</th><th>Name</th><th>Status</th></tr>
-<?php foreach($students as $s): ?>
-<tr>
-<td><?php echo $s['student_id']; ?></td>
-<td><?php echo $s['name']; ?></td>
-<td>
-<label><input type="radio" name="status_<?php echo $s['student_id']; ?>" value="present" checked> Present</label>
-<label><input type="radio" name="status_<?php echo $s['student_id']; ?>" value="absent"> Absent</label>
-</td>
-</tr>
-<?php endforeach; ?>
-</table>
-<button type="submit">Submit Attendance</button>
-</form>
-</body>
-</html>
 

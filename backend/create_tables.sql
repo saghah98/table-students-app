@@ -1,6 +1,6 @@
 -- create_tables.sql
-CREATE DATABASE IF NOT EXISTS tableStudent CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE tableStudent;
+CREATE DATABASE IF NOT EXISTS tablestudent CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE tablestudent;
 
 -- students
 CREATE TABLE IF NOT EXISTS students (
