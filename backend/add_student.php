@@ -1,44 +1,22 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+header('Content-Type: application/json');
+require_once 'database.php';
 
-// Vérifie que les données POST existent
-if (isset($_POST['student_id']) && isset($_POST['name']) && isset($_POST['group'])) {
+$fullname = trim($_POST['fullname'] ?? '');
+$matricule = trim($_POST['matricule'] ?? '');
+$group_id = trim($_POST['group_id'] ?? '');
 
-    $student_id = trim($_POST['student_id']);
-    $name = trim($_POST['name']);
-    $group = trim($_POST['group']);
+if(!$fullname || !$matricule || !$group_id){
+  echo json_encode(['status'=>'error','message'=>'Missing fields']);
+  exit;
+}
 
-    // Validation simple
-    if ($student_id === "" || $name === "" || $group === "") {
-        echo "❌ All fields are required!";
-        exit;
-    }
-
-    $file = 'students.json';
-    $students = [];
-
-    // Charge le fichier existant
-    if (file_exists($file)) {
-        $students = json_decode(file_get_contents($file), true);
-        if (!$students) $students = [];
-    }
-
-    // Ajoute le nouvel étudiant
-    $students[] = [
-        'student_id' => $student_id,
-        'name' => $name,
-        'group' => $group
-    ];
-
-    // Sauvegarde dans students.json
-    file_put_contents($file, json_encode($students, JSON_PRETTY_PRINT));
-
-    echo "✅ Student added successfully!";
-
-} else {
-    echo "❌ Form data not received!";
+try {
+  $stmt = $pdo->prepare("INSERT INTO students (fullname, matricule, group_id) VALUES (?, ?, ?)");
+  $stmt->execute([$fullname, $matricule, $group_id]);
+  echo json_encode(['status'=>'success','message'=>'Student added','id'=>$pdo->lastInsertId()]);
+} catch (Exception $e) {
+  echo json_encode(['status'=>'error','message'=>'DB error: '.$e->getMessage()]);
 }
 ?>
 

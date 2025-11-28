@@ -1,0 +1,27 @@
+/* Basic layout & theme */
+*{box-sizing:border-box}
+body{
+  font-family: Arial, sans-serif;
+  margin:0;
+  background:#f7f9fc;
+  color:#0b2545;
+}
+header{background:#0096c7;color:#fff;padding:14px;text-align:center}
+nav{display:flex;justify-content:center;background:#00b4d8;padding:6px;gap:8px;flex-wrap:wrap}
+nav a{color:#fff;padding:8px 12px;text-decoration:none;font-weight:700;border-radius:6px}
+nav a:hover{background:#0077b6}
+main{padding:18px}
+.panel{background:#fff;padding:16px;margin:16px 0;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+table{width:100%;border-collapse:collapse;background:#fff}
+th,td{border:1px solid #ddd;padding:6px;text-align:center;font-size:14px}
+th{background:#90e0ef}
+input[type=text],input[type=password]{width:100%;padding:10px;margin:8px 0;border:1px solid #ccc;border-radius:6px}
+button{background:#00b4d8;color:#fff;border:0;padding:10px 14px;border-radius:6px;cursor:pointer}
+button:hover{background:#0077b6}
+.good{background:#d4edda}
+.warning{background:#fff3cd}
+.bad{background:#f8d7da}
+footer{text-align:center;padding:10px;color:#666}
+.actions-btn{margin:0 4px;padding:6px 8px;border-radius:6px}
+.edit-btn{background:#ffd166}
+.del-btn{background:#ef476f}

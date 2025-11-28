@@ -1,505 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Student Attendance System</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f7f9fc;
-    }
-
-    header {
-      background-color: #0096c7;
-      color: white;
-      padding: 10px 20px;
-      text-align: center;
-    }
-
-    nav {
-      display: flex;
-      justify-content: center;
-      background-color: #00b4d8;
-      flex-wrap: wrap;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      padding: 12px 20px;
-      display: block;
-      font-weight: bold;
-      transition: background-color 0.3s;
-    }
-
-    nav a:hover {
-      background-color: #0077b6;
-    }
-
-    section {
-      padding: 20px;
-    }
-
-    h2 {
-      color: #0077b6;
-    }
-
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background-color: white;
-    }
-
-    th, td {
-      border: 1px solid #ccc;
-      padding: 6px;
-      text-align: center;
-    }
-
-    th {
-      background-color: #90e0ef;
-    }
- 
-    .good {
-      background-color: #d4edda;
-    }
-    .warning {
-      background-color: #fff3cd;
-    }
-    .bad {
-      background-color: #f8d7da;
-    }
-
-
-    form {
-      background-color: white;
-      padding: 20px;
-      margin-top: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 8px rgba(0,0,0,0.1);
-    }
-
-    label {
-      display: block;
-      margin: 10px 0 5px;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 5px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    button {
-      background-color: #00b4d8;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer; 
-    }
-
-    button:hover {
-      background-color: #0077b6;
-    }
-
-    .error {
-      color: red;
-      font-size: 14px;
-      margin-bottom: 10px;
-    }
-
-    @media (min-width: 600px) {
-      form {
-        width: 60%;
-        margin: 20px auto;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <header>
-    <h1>Student Attendance System</h1>
-  </header>
+  <header><h1>Student Attendance System</h1></header>
 
   <nav>
-    <a href="#">Home</a>
-    <a href="#">Attendance List</a>
-    <a href="#">Add Student</a>
-    <a href="#">Reports</a>
-    <a href="#">Logout</a>
+    <a href="#" id="nav-home">Home</a>
+    <a href="#" id="nav-att">Attendance List</a>
+    <a href="#" id="nav-add">Add Student</a>
+    <a href="#" id="nav-report">Reports</a>
+    <a href="#" id="nav-logout" style="display:none;">Logout</a>
   </nav>
 
+  <main>
+    <!-- LOGIN -->
+    <section id="loginSection" class="panel">
+      <h2>Admin Login</h2>
+      <form id="loginForm">
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Login</button>
+      </form>
+      <div id="loginMsg"></div>
+    </section>
 
-  <section>
-    <h2>Attendance List</h2>
+    <!-- ATTENDANCE -->
+    <section id="attendanceSection" class="panel" style="display:none;">
+      <h2>Attendance List</h2>
 
-    <table id="attendanceTable">
-      <thead>
-        <tr>
-          <th rowspan="2">Last Name</th>
-          <th rowspan="2">First Name</th>
-          <th colspan="2">S1</th>
-          <th colspan="2">S2</th>
-          <th colspan="2">S3</th>
-          <th colspan="2">S4</th>
-          <th colspan="2">S5</th>
-          <th colspan="2">S6</th>
-          <th rowspan="2">Message</th>
-        </tr>
-        <tr>
-          <th>P</th><th>Pa</th>
-          <th>P</th><th>Pa</th>
-          <th>P</th><th>Pa</th>
-          <th>P</th><th>Pa</th>
-          <th>P</th><th>Pa</th>
-          <th>P</th><th>Pa</th>
-        </tr>
-      </thead>
+      <table id="attendanceTable">
+        <thead>
+          <tr>
+            <th>Last Name</th><th>First Name</th>
+            <th colspan="2">S1</th><th colspan="2">S2</th>
+            <th colspan="2">S3</th><th colspan="2">S4</th>
+            <th colspan="2">S5</th><th colspan="2">S6</th>
+            <th>Message</th><th>Actions</th>
+          </tr>
+          <tr>
+            <th></th><th></th>
+            <th>P</th><th>Pa</th><th>P</th><th>Pa</th><th>P</th><th>Pa</th>
+            <th>P</th><th>Pa</th><th>P</th><th>Pa</th><th>P</th><th>Pa</th>
+            <th></th><th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- generated rows -->
+        </tbody>
+      </table>
 
-      <tbody>
-        <tr>
-          <td>Ahmed</td>
-          <td>Sara</td>
-          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A"></td>
-          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A"></td>
-          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A"></td>
-          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A"></td>
-          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A"></td>
-          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A"></td>
-          <td class="message"></td>
-        </tr>
+      <div style="margin-top:12px;">
+        <button id="highlightBtn">Highlight Excellent Students</button>
+        <button id="resetBtn">Reset Colors</button>
+      </div>
+    </section>
 
-        <tr>
-          <td>Yacine</td>
-          <td>Ali</td>
-          <td><input type="checkbox" class="P" checked></td><td><input type="checkbox" class="A"></td>
-          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A"></td>
-          <td><input type="checkbox" class="P" checked></td><td><input type="checkbox" class="A"></td>
-          <td><input type="checkbox" class="P" checked></td><td><input type="checkbox" class="A"></td>
-          <td><input type="checkbox" class="P" checked></td><td><input type="checkbox" class="A"></td>
-          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A"></td>
-          <td class="message"></td>
-        </tr>
+    <!-- ADD -->
+    <section id="addSection" class="panel" style="display:none;">
+      <h2>Add New Student</h2>
+      <form id="studentForm">
+        <input type="text" name="fullname" placeholder="Full Name (Last First)" required>
+        <input type="text" name="matricule" placeholder="Matricule" required>
+        <input type="text" name="group_id" placeholder="Group" required>
+        <button type="submit">Add Student</button>
+      </form>
+      <div id="addMsg"></div>
 
-        <tr>
-          <td>Rania</td>
-          <td>Houcine</td>
-          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A" checked></td>
-          <td><input type="checkbox" class="P" checked></td><td><input type="checkbox" class="A"></td>
-          <td><input type="checkbox" class="P" checked></td><td><input type="checkbox" class="A"></td>
-          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A" checked></td>
-          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A" checked></td>
-          <td><input type="checkbox" class="P"></td><td><input type="checkbox" class="A"></td>
-          <td class="message"></td>
-        </tr>
-      </tbody>
-    </table>
-    <button id="highlightBtn" style="margin-top:15px;">Highlight Excellent Students</button>
-    <button id="resetBtn" style="margin-top:15px; margin-left:10px;">Reset Colors</button>
+      <h3>Student List</h3>
+      <table id="studentsTable">
+        <thead><tr><th>ID</th><th>Full Name</th><th>Matricule</th><th>Group</th><th>Actions</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
 
-  </section>
-  <section>
-  <h2>Add New Student</h2>
+    <!-- REPORT -->
+    <section id="reportSection" class="panel" style="display:none;">
+      <h2>Attendance Report</h2>
+      <button id="showReportBtn">Show Report</button>
+      <div id="reportContent" style="display:none;">
+        <p><strong>Total Students:</strong> <span id="totalStudents">0</span></p>
+        <p><strong>Students Present:</strong> <span id="studentsPresent">0</span></p>
+        <p><strong>Students Participated:</strong> <span id="studentsParticipated">0</span></p>
+        <canvas id="attendanceChart" width="500" height="250"></canvas>
+      </div>
+    </section>
+  </main>
 
-<form action="http://localhost/tableStudent/backend/add_student.php" method="POST">
-  <input type="text" name="student_id" placeholder="Student ID">
-  <input type="text" name="name" placeholder="Name">
-  <input type="text" name="group" placeholder="Group">
-  <button type="submit">Submit</button>
-</form>
+  <footer>Made with ❤️</footer>
 
-</section>
- 
-  <section>
-    <h2>Attendance Report</h2>
-    <button id="showReportBtn">Show Report</button>
-    
-    <div id="reportSection" style="display:none; margin-top:20px;">
-      <h3>Statistics</h3>
-      <p><strong>Total Students:</strong> <span id="totalStudents">0</span></p>
-      <p><strong>Students Present:</strong> <span id="studentsPresent">0</span></p>
-      <p><strong>Students Participated:</strong> <span id="studentsParticipated">0</span></p>
-
-      <canvas id="attendanceChart" width="400" height="200"></canvas>
-    </div>
-  </section>
-
-  
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
-  <script>
-    
-    function updateTable() {
-      const rows = document.querySelectorAll("#attendanceTable tbody tr");
-
-      rows.forEach(row => {
-        const presentChecks = row.querySelectorAll('input.P');
-        const absentChecks = row.querySelectorAll('input.A');
-        const messageCell = row.querySelector('.message');
-
-        let participations = 0;
-        let absences = 0;
-
-        for (let i = 0; i < presentChecks.length; i++) {
-          if (presentChecks[i].checked) participations++;
-          if (absentChecks[i].checked) absences++;
-        }
-
-        row.classList.remove('good', 'warning', 'bad');
-        if (absences < 3) {
-          row.classList.add('good');
-          messageCell.textContent = `Good attendance (${absences} abs, ${participations} par)`;
-        } else if (absences >= 3 && absences <= 4) {
-          row.classList.add('warning');
-          messageCell.textContent = `Warning – Low attendance (${absences} abs, ${participations} par)`;
-        } else {
-          row.classList.add('bad');
-          messageCell.textContent = `Excluded – Too many absences (${absences} abs, ${participations} par)`;
-        }
-      });
-    }
-
-    document.querySelectorAll("#attendanceTable input").forEach(chk => {
-      chk.addEventListener("change", e => {
-        const cell = e.target.closest("td");
-        if (e.target.classList.contains("P")) {
-          const correspondingA = e.target.parentElement.nextElementSibling?.querySelector(".A");
-          if (correspondingA) correspondingA.checked = false;
-        } else if (e.target.classList.contains("A")) {
-          const correspondingP = e.target.parentElement.previousElementSibling?.querySelector(".P");
-          if (correspondingP) correspondingP.checked = false;
-        }
-        updateTable();
-      });
-    });
-
-    updateTable();
-
-  
-     document.getElementById("studentForm").addEventListener("submit", function(event) {
-      // event.preventDefault();
-
-      const id = document.getElementById("studentId").value.trim();
-      const lastName = document.getElementById("lastName").value.trim();
-      const firstName = document.getElementById("firstName").value.trim();
-      const email = document.getElementById("email").value.trim();
-
-      const idError = document.getElementById("idError");
-      const lastNameError = document.getElementById("lastNameError");
-      const firstNameError = document.getElementById("firstNameError");
-      const emailError = document.getElementById("emailError");
-
-      idError.textContent = "";
-      lastNameError.textContent = "";
-      firstNameError.textContent = "";
-      emailError.textContent = "";
-
-      let isValid = true;
-
-      if (id === "") {
-        idError.textContent = "Student ID is required.";
-        isValid = false;
-      } else if (!/^[0-9]+$/.test(id)) {
-        idError.textContent = "Student ID must contain only numbers.";
-        isValid = false;
-      }
-
-      if (lastName === "") {
-        lastNameError.textContent = "Last Name is required.";
-        isValid = false;
-      } else if (!/^[A-Za-z]+$/.test(lastName)) {
-        lastNameError.textContent = "Last Name must contain only letters.";
-        isValid = false;
-      }
-
-      if (firstName === "") {
-        firstNameError.textContent = "First Name is required.";
-        isValid = false;
-      } else if (!/^[A-Za-z]+$/.test(firstName)) {
-        firstNameError.textContent = "First Name must contain only letters.";
-        isValid = false;
-      }
-
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (email === "") {
-        emailError.textContent = "Email is required.";
-        isValid = false;
-      } else if (!emailPattern.test(email)) {
-        emailError.textContent = "Enter a valid email address.";
-        isValid = false;
-      }
-
-    if (isValid) {
-        const studentData = {
-          studentId: id,
-          lastName: lastName,
-          firstName: firstName,
-          email: email
-           };
-
- 
-  fetch("add_student.php", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(studentData)
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.status === "success") {
-      
-      
-      const tableBody = document.querySelector("#attendanceTable tbody");
-      const newRow = document.createElement("tr");
-
-      let cells = `
-        <td>${lastName}</td>
-        <td>${firstName}</td>
-      `;
-      for (let i = 0; i < 6; i++) {
-        cells += `
-          <td><input type="checkbox" class="P"></td>
-          <td><input type="checkbox" class="A"></td>
-        `;
-      }
-      cells += `<td class="message"></td>`;
-
-      newRow.innerHTML = cells;
-      tableBody.appendChild(newRow);
-     
-       setTimeout(() => {
-       newRow.classList.add('show'); 
-       }, 10);
-
-
-      updateTable();
-      alert("✅ Student successfully added and saved in database!");
-      document.getElementById("studentForm").reset();
-    } 
-    else {
-      alert("❌ Error: " + data.message);
-    }
-  });
-}
-
-    }); 
-
-  
-    document.getElementById("showReportBtn").addEventListener("click", function() {
-      const rows = document.querySelectorAll("#attendanceTable tbody tr");
-      const totalStudents = rows.length;
-      let studentsPresent = 0;
-      let studentsParticipated = 0;
-
-      rows.forEach(row => {
-        const presentChecks = row.querySelectorAll('input.P');
-        const anyPresent = Array.from(presentChecks).some(chk => chk.checked);
-        const participationCount = Array.from(presentChecks).filter(chk => chk.checked).length;
-
-        if (anyPresent) studentsPresent++;
-        if (participationCount > 0) studentsParticipated++;
-      });
-
-      document.getElementById("totalStudents").textContent = totalStudents;
-      document.getElementById("studentsPresent").textContent = studentsPresent;
-      document.getElementById("studentsParticipated").textContent = studentsParticipated;
-
-      document.getElementById("reportSection").style.display = "block";
-
-      const ctx = document.getElementById('attendanceChart').getContext('2d');
-       //if (window.attendanceChart) window.attendanceChart.destroy();
-
-      window.attendanceChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['Total Students', 'Present', 'Participated'],
-          datasets: [{
-            label: 'Attendance Overview',
-            data: [totalStudents, studentsPresent, studentsParticipated],
-            backgroundColor: ['#0077b6', '#00b4d8', '#90e0ef']
-          }]
-        },
-        options: {
-          responsive: true,
-          scales: {
-            y: { beginAtZero: true, ticks: { stepSize: 1 } }
-          }
-        }
-      });
-    });
-  </script> 
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script>
-$(document).ready(function () {
-
-    
-    $("#attendanceTable tbody").on("mouseenter", "tr", function () {
-        $(this).css("background-color", "#e3f2fd");
-    });
-
-   
-    $("#attendanceTable tbody").on("mouseleave", "tr", function () {
-        $(this).css("background-color", "");
-    });
-   
-    $("#attendanceTable tbody").on("click", "tr", function () {
-        const lastName = $(this).find("td:nth-child(1)").text();
-        const firstName = $(this).find("td:nth-child(2)").text();
-
-        let absences = 0;
-        $(this).find("input.A:checked").each(function () {
-            absences++;
-        });
-
-        alert(
-            "👤 Student: " + firstName + " " + lastName +
-            "\n❌ Absences: " + absences
-        );
-    });
-});
-</script>
-<script>
-$(document).ready(function () {
-
-
-    $("#highlightBtn").on("click", function () {
-
-        $("#attendanceTable tbody tr").each(function () {
-
-            let absences = $(this).find("input.A:checked").length;
-
-            if (absences < 3) {
-                // Animation (fade + color change)
-                $(this)
-                    .animate({opacity: 0.3}, 300)
-                    .animate({opacity: 1}, 300)
-                    .css("background-color", "#b2ffb2"); // vert clair
-            }
-        });
-
-    });
-
-  
-    $("#resetBtn").on("click", function () {
-
-        $("#attendanceTable tbody tr").each(function () {
-            $(this).css("background-color", ""); // reset
-        });
-
-    });
-
-});
-</script>
-
-
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
+
