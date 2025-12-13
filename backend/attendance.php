@@ -1,62 +1,41 @@
 <?php
-header('Content-Type: application/json');
-require_once 'database.php';
+header("Content-Type: application/json");
+require "db_connect.php";
 
-// support two actions:
-// GET: ?action=get_all -> returns all attendance records
-// POST: JSON { action: 'save_many', records: [ {student_id, session, present, participated}, ... ] }
+$input = json_decode(file_get_contents("php://input"), true);
+$action = $_GET["action"] ?? ($input["action"] ?? "");
 
-$method = $_SERVER['REQUEST_METHOD'];
-
-if($method === 'GET'){
-  $action = $_GET['action'] ?? '';
-  if($action === 'get_all'){
-    $stmt = $pdo->query("SELECT student_id, session, present, participated FROM attendance");
-    $rows = $stmt->fetchAll();
-    echo json_encode($rows);
-    exit;
-  }
-  echo json_encode(['status'=>'error','message'=>'Invalid GET action']);
-  exit;
-}
-
-$input = json_decode(file_get_contents('php://input'), true);
-if(!$input){
-  echo json_encode(['status'=>'error','message'=>'No JSON body']);
-  exit;
-}
-
-$action = $input['action'] ?? '';
-
-if($action === 'save_many'){
-  $records = $input['records'] ?? [];
-  if(!is_array($records)){
-    echo json_encode(['status'=>'error','message'=>'Records must be array']);
-    exit;
-  }
-  try {
-    $pdo->beginTransaction();
-    $upsert = $pdo->prepare(
-      "INSERT INTO attendance (student_id, session, present, participated)
-       VALUES (?, ?, ?, ?)
-       ON DUPLICATE KEY UPDATE present = VALUES(present), participated = VALUES(participated)"
-    );
-    foreach($records as $r){
-      $sid = intval($r['student_id'] ?? 0);
-      $session = intval($r['session'] ?? 0);
-      $present = intval($r['present'] ?? 0);
-      $participated = intval($r['participated'] ?? 0);
-      if(!$sid || !$session) continue;
-      $upsert->execute([$sid, $session, $present, $participated]);
+if ($action === "get_all") {
+    try {
+        $stmt = $conn->query("SELECT * FROM attendance ORDER BY student_id, session");
+        echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
+    } catch (Exception $e) {
+        echo json_encode([]);
     }
-    $pdo->commit();
-    echo json_encode(['status'=>'success','message'=>'Attendance saved']);
-  } catch (Exception $e) {
-    $pdo->rollBack();
-    echo json_encode(['status'=>'error','message'=>$e->getMessage()]);
-  }
-  exit;
+    exit;
 }
 
-echo json_encode(['status'=>'error','message'=>'Invalid action']);
+if ($action === "save_many") {
+    $records = $input["records"] ?? [];
+
+    try {
+        $stmt = $conn->prepare("INSERT INTO attendance (student_id, session, present, participated)
+                                VALUES (?, ?, ?, ?)
+                                ON DUPLICATE KEY UPDATE present=VALUES(present), participated=VALUES(participated)");
+
+        foreach ($records as $r) {
+            $stmt->execute([
+                $r["student_id"],
+                $r["session"],
+                $r["present"],
+                $r["participated"]
+            ]);
+        }
+
+        echo json_encode(["status"=>"success","message"=>"Attendance saved"]);
+    } catch (Exception $e) {
+        echo json_encode(["status"=>"error","message"=>$e->getMessage()]);
+    }
+    exit;
+}
 ?>

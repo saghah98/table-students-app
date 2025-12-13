@@ -1,29 +1,15 @@
 <?php
 header('Content-Type: application/json');
-session_start();
-require_once 'database.php';
+require 'db_connect.php';
 
-$username = trim($_POST['username'] ?? '');
+$username = $_POST['username'] ?? '';
 $password = $_POST['password'] ?? '';
 
-if(!$username || !$password){
-  echo json_encode(['status'=>'error','message'=>'Missing credentials']);
-  exit;
-}
+$stmt = $conn->prepare("SELECT * FROM admin WHERE username=? AND password=?");
+$stmt->execute([$username, $password]);
 
-try {
-  $stmt = $pdo->prepare("SELECT id, username, password_hash FROM admins WHERE username = ?");
-  $stmt->execute([$username]);
-  $row = $stmt->fetch();
-  if(!$row || !password_verify($password, $row['password_hash'])){
-    echo json_encode(['status'=>'error','message'=>'Invalid credentials']);
-    exit;
-  }
-  // store minimal session
-  $_SESSION['admin_id'] = $row['id'];
-  $_SESSION['admin_user'] = $row['username'];
-  echo json_encode(['status'=>'success','message'=>'Logged in']);
-} catch (Exception $e) {
-  echo json_encode(['status'=>'error','message'=>$e->getMessage()]);
+if($stmt->rowCount() > 0){
+    echo json_encode(["status"=>"success"]);
+} else {
+    echo json_encode(["status"=>"error","message"=>"Invalid login"]);
 }
-?>
